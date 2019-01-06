@@ -13,7 +13,7 @@ Obviously I do not own every sensor so I have developed base on the ones I own a
 
 Supported sensors: `02, 10, 08, 03, 09, 0B, 07`
 
-## Run
+## Build
 
 ### Locally
 
@@ -24,12 +24,24 @@ Supported sensors: `02, 10, 08, 03, 09, 0B, 07`
 
 ```
 docker build -t mobile-alerts-scraper .
-docker run --rm mobile-alerts-scraper --phoneid <your-phone-id-goes-here>
+docker run --rm mobile-alerts-scraper /go/bin/mobile-alerts-scraper --phoneid <your-phone-id-goes-here>
 ```
 ### For raspberry pi
 
 ```
 docker build -t mobile-alerts-scraper -f $(pwd)/Dockerfile.raspi .
+docker run --rm mobile-alerts-scraper /go/bin/mobile-alerts-scraper --phoneid <your-phone-id-goes-here>
+```
+## Run
+
+### On amd64
+```
+docker run --rm docker.io/asksven/mobile-alerts-scraper:latest /go/bin/mobile-alerts-scraper --phoneid <your-phone-id-goes-here>
+```
+
+### On Raspberry Pi
+```
+docker run --rm docker.io/asksven/mobile-alerts-scraper:latest-rpi /go/bin/mobile-alerts-scraper --phoneid <your-phone-id-goes-here>
 ```
 
 ## Implementation

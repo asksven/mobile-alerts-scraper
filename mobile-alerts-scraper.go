@@ -30,8 +30,8 @@ type Reading struct {
 	ReadingValue         decimal.Decimal `json:"reading_value"`     // can be 0 if the reading is not a number. In this case we use reading_value_str
 	ReadingValue_str     string          `json:"reading_value_str"` // we try to avoid using this as long as the readings are decimal values
 	ReadingUnit          string          `json:"reading_unit"`
-	ReadingTimestamp_str string          `json:"reading_timestamp"`
-	ReadingTimestamp_ns  int64           `json:"reading_timestamp_str"`
+	ReadingTimestamp_str string          `json:"reading_timestamp_str"`
+	ReadingTimestamp_s   int64           `json:"reading_timestamp_s"`
 }
 
 var parsedElements []kvPair
@@ -137,6 +137,21 @@ func parseValUnit(input string) (decimal.Decimal, string) {
 	}
 }
 
+func parseTimeStamp(input string) (string, int64) {
+	// Writing down the way the standard time would look like formatted our way
+	layout := "1/2/2006 3:4:5 PM"
+	layout2 := "Mon, 02 Jan 2006 15:04:05"
+
+	// fmt.Println("Layout:" + layout)
+	// fmt.Println("Input:" + input)
+
+	t, _ := time.Parse(layout, input)
+
+	//fmt.Println("Output str:" + t.Format(layout2))
+	//fmt.Println("Output ns: " + strconv.FormatInt(t.Unix(), 10))
+	return t.Format(layout2), t.Unix()
+}
+
 // Main
 func main() {
 
@@ -219,7 +234,9 @@ func main() {
 				var current Reading
 				current.SensorName = sensorName
 				current.SensorId = sensorId
-				current.ReadingTimestamp_str = readingTimestamp_str
+				str, s := parseTimeStamp(readingTimestamp_str)
+				current.ReadingTimestamp_str = str
+				current.ReadingTimestamp_s = s
 				current.ReadingType = value
 				current.ReadingValue = val
 				current.ReadingValue_str = parsedElements[i+1].value
@@ -234,7 +251,9 @@ func main() {
 				var current Reading
 				current.SensorName = sensorName
 				current.SensorId = sensorId
-				current.ReadingTimestamp_str = readingTimestamp_str
+				str, s := parseTimeStamp(readingTimestamp_str)
+				current.ReadingTimestamp_str = str
+				current.ReadingTimestamp_s = s
 				current.ReadingType = value
 				current.ReadingValue = val
 				current.ReadingValue_str = parsedElements[i+1].value
@@ -249,7 +268,9 @@ func main() {
 				var current Reading
 				current.SensorName = sensorName
 				current.SensorId = sensorId
-				current.ReadingTimestamp_str = readingTimestamp_str
+				str, s := parseTimeStamp(readingTimestamp_str)
+				current.ReadingTimestamp_str = str
+				current.ReadingTimestamp_s = s
 				current.ReadingType = value
 				current.ReadingValue = val
 				current.ReadingValue_str = parsedElements[i+1].value
@@ -264,7 +285,9 @@ func main() {
 				var current Reading
 				current.SensorName = sensorName
 				current.SensorId = sensorId
-				current.ReadingTimestamp_str = readingTimestamp_str
+				str, s := parseTimeStamp(readingTimestamp_str)
+				current.ReadingTimestamp_str = str
+				current.ReadingTimestamp_s = s
 				current.ReadingType = value
 				current.ReadingValue = val
 				current.ReadingValue_str = parsedElements[i+1].value
@@ -279,7 +302,9 @@ func main() {
 				var current Reading
 				current.SensorName = sensorName
 				current.SensorId = sensorId
-				current.ReadingTimestamp_str = readingTimestamp_str
+				str, s := parseTimeStamp(readingTimestamp_str)
+				current.ReadingTimestamp_str = str
+				current.ReadingTimestamp_s = s
 				current.ReadingType = value
 				current.ReadingValue = val
 				current.ReadingValue_str = parsedElements[i+1].value
@@ -294,7 +319,9 @@ func main() {
 				var current Reading
 				current.SensorName = sensorName
 				current.SensorId = sensorId
-				current.ReadingTimestamp_str = readingTimestamp_str
+				str, s := parseTimeStamp(readingTimestamp_str)
+				current.ReadingTimestamp_str = str
+				current.ReadingTimestamp_s = s
 				current.ReadingType = value
 				current.ReadingValue = val
 				current.ReadingValue_str = parsedElements[i+1].value
@@ -308,7 +335,9 @@ func main() {
 				var current Reading
 				current.SensorName = sensorName
 				current.SensorId = sensorId
-				current.ReadingTimestamp_str = readingTimestamp_str
+				str, s := parseTimeStamp(readingTimestamp_str)
+				current.ReadingTimestamp_str = str
+				current.ReadingTimestamp_s = s
 				current.ReadingType = value
 				//	we don't have a decimal value
 				current.ReadingValue_str = parsedElements[i+1].value
@@ -327,7 +356,9 @@ func main() {
 				var current Reading
 				current.SensorName = sensorName
 				current.SensorId = sensorId
-				current.ReadingTimestamp_str = readingTimestamp_str
+				str, s := parseTimeStamp(readingTimestamp_str)
+				current.ReadingTimestamp_str = str
+				current.ReadingTimestamp_s = s
 				current.ReadingType = value
 				current.ReadingValue = hum
 				current.ReadingValue_str = parsedElements[i+1].value
@@ -346,7 +377,9 @@ func main() {
 				var current Reading
 				current.SensorName = sensorName
 				current.SensorId = sensorId
-				current.ReadingTimestamp_str = readingTimestamp_str
+				str, s := parseTimeStamp(readingTimestamp_str)
+				current.ReadingTimestamp_str = str
+				current.ReadingTimestamp_s = s
 				current.ReadingType = value
 				current.ReadingValue = hum
 				current.ReadingUnit = unit
@@ -364,7 +397,9 @@ func main() {
 				var current Reading
 				current.SensorName = sensorName
 				current.SensorId = sensorId
-				current.ReadingTimestamp_str = readingTimestamp_str
+				str, s := parseTimeStamp(readingTimestamp_str)
+				current.ReadingTimestamp_str = str
+				current.ReadingTimestamp_s = s
 				current.ReadingType = value
 				current.ReadingValue = hum
 				current.ReadingUnit = unit
@@ -377,7 +412,9 @@ func main() {
 				var current Reading
 				current.SensorName = sensorName
 				current.SensorId = sensorId
-				current.ReadingTimestamp_str = readingTimestamp_str
+				str, s := parseTimeStamp(readingTimestamp_str)
+				current.ReadingTimestamp_str = str
+				current.ReadingTimestamp_s = s
 				//				current.ReadingType = value
 				current.ReadingValue_str = parsedElements[i+1].value
 				//				current.ReadingUnit = unit
@@ -391,7 +428,9 @@ func main() {
 				var current Reading
 				current.SensorName = sensorName
 				current.SensorId = sensorId
-				current.ReadingTimestamp_str = readingTimestamp_str
+				str, s := parseTimeStamp(readingTimestamp_str)
+				current.ReadingTimestamp_str = str
+				current.ReadingTimestamp_s = s
 				current.ReadingType = value
 				current.ReadingValue = val
 				current.ReadingValue_str = parsedElements[i+1].value
