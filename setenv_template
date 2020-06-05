@@ -1,0 +1,7 @@
+# !/bin/bash
+export USER=<influxdb-user>
+export PASSWORD=<influxdb-password>
+export DBNAME=nfluxdb-database-name, e.g. meteorology>
+export HOST=<influxdb-url>
+export PORT=<influxdb-port (default 8086)>
+export LOGDIR=<where-you-write-your-logs-to>

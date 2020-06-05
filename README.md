@@ -44,6 +44,31 @@ docker run --rm docker.io/asksven/mobile-alerts-scraper:latest /go/bin/mobile-al
 docker run --rm docker.io/asksven/mobile-alerts-scraper:latest-rpi /go/bin/mobile-alerts-scraper --phoneid <your-phone-id-goes-here>
 ```
 
+## Collect data
+
+### logparser.py
+
+`logparser.py` parses the scraped data, and formats it so that it can be pushed to influxdb:
+
+1. Into two distinct timeseries for temperature and humitity
+1. Aside from the value the timeserie has the following tags (for querying): `sensor_id`, `location` (so that you can retrieve data from multiple locations if you want), `reading_type` (as different sensors delivery different types, e.g. Inside out Outside), `sensor_name`
+
+`logparser.py` pushes the data to an influxdb database and requires different parameters for that. These are defined in `setenv_template`. To operate the python programm:
+
+1. rename `setenv_template` to `sentenv`
+1. Instanciate the values based on your settings
+
+### Scheduled job
+
+To run the sequence (retrieve data, push to influxdb) as a cronjob:
+
+```
+*/30 * * * * sudo docker run --rm asksven/mobile-alerts-scraper:raspi-latest /go/bin/mobile-alerts-scraper --phoneid <your-phoneid> >> /home/pi/git/mobile-alerts-scraper/logs/mobile-alerts_`date "+\%Y-\%m-\%d_\%H\%M"`.log \ 
+               && cd /home/pi/git/mobile-alerts-scraper && source setenv && ./loop.sh
+```
+
+1. `docker run` collects the data and puts it to `/home/pi/git/mobile-alerts-scraper/logs` as a logfile with the timestamp as name
+1. `loop.sh` loops over the unprocessed logfiles and pushes the data to influxdb 
 ## Implementation
 
 The scraper uses `github.com/PuerkitoBio/goquery` to process the DOM:
@@ -65,3 +90,5 @@ type Reading struct {
 	ReadingTimestamp_ns  int64           `json:"reading_timestamp_str"`
 }
 ```
+
+
